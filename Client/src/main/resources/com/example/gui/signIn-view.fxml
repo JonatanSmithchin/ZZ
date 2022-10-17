@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gui.SignInController">
+   <children>
+      <TextField alignment="CENTER" layoutY="80.0" prefHeight="32.0" prefWidth="335.0">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="2.0" layoutY="57.0" prefHeight="23.0" prefWidth="335.0" text="请输入用户名：">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="2.0" layoutY="112.0" prefHeight="15.0" prefWidth="335.0" text="请输入密码：">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </Label>
+      <TextField accessibleRole="PASSWORD_FIELD" alignment="CENTER" layoutY="138.0" prefHeight="32.0" prefWidth="335.0">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="2.0" layoutY="170.0" prefHeight="15.0" prefWidth="335.0" text="请再次输入密码：">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER" layoutY="192.0" prefHeight="32.0" prefWidth="335.0">
+         <font>
+            <Font name="Microsoft YaHei" size="16.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
