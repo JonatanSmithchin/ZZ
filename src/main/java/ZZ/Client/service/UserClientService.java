@@ -32,6 +32,9 @@ public class UserClientService {
 
             if (ms.getMessageType().equals(MessageType.MESSAGE_LOGIN_SUCCEED)) {
                 //创建新线程保证通信
+                ClientConnectServerThread ccst = new ClientConnectServerThread(socket);
+                ccst.start();
+                ManagerOfClientThread.addClientThread(userName,ccst);
                 b = true;
             } else {
                 socket.close();//登陆失败,则关闭Socket
@@ -41,4 +44,37 @@ public class UserClientService {
         }
         return b;
     }
+    public void onlineUserList(){
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_GET_ONLINE_USER);
+        message.setSender(u.getUserName());
+        try {
+            ObjectOutputStream oos =
+                    new ObjectOutputStream(ManagerOfClientThread.
+                            getClientThread(u.getUserName()).
+                            getSocket().getOutputStream());
+            //通过UserId从管理线程的Map中得到该用户的线程对象关联的Socket的输出流
+            oos.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void exit(){
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_CLIENT_EXIT);
+        message.setSender(u.getUserName());
+        try {
+            ObjectOutputStream oos =
+                    new ObjectOutputStream(
+                            ManagerOfClientThread.
+                                    getClientThread(u.getUserName()).
+                                    getSocket().getOutputStream());
+            System.out.println("退出登录。。。");
+            oos.writeObject(message);
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

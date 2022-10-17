@@ -1,5 +1,7 @@
 package ZZ.Server;
 
+import ZZ.Server.Service.ManagerOfServerThread;
+import ZZ.Server.Service.ServerConnectClientThread;
 import ZZ.domain.Message;
 import ZZ.domain.MessageType;
 import ZZ.domain.User;
@@ -41,6 +43,9 @@ public class Server {
                     System.out.println("登陆成功！");
                     message.setMessageType(MessageType.MESSAGE_LOGIN_SUCCEED);
                     oos.writeObject(message);
+                    ServerConnectClientThread scct = new ServerConnectClientThread(socket, user.getUserName());
+                    scct.start();
+                    ManagerOfServerThread.addServerThread(scct.getUserName(), scct);
                 }else{
                     System.out.println("登录失败！");
                     message.setMessageType(MessageType.MESSAGE_LOGIN_FAILED);
@@ -50,16 +55,7 @@ public class Server {
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            }finally{
-                try {
-                    ois.close();
-                    oos.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
             }
-
         }
     }
 }
