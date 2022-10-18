@@ -16,18 +16,14 @@ public class UserClientService {
     private User u = new User();
     Socket socket;
 
-    public UserClientService() throws IOException {
-        socket = new Socket(InetAddress.getByName("localhost"), 9999);
-    }
-
 
     public boolean checkUser(String userName, String password) {
         u.setUserName(userName);
         u.setPassword(password);
-        boolean isSuccess = false;
+        boolean b = false;
 
         try {
-
+            socket = new Socket(InetAddress.getByName("localhost"), 9999);
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(u);
 
@@ -36,14 +32,13 @@ public class UserClientService {
 
             if (ms.getMessageType().equals(MessageType.MESSAGE_LOGIN_SUCCEED)) {
                 //创建新线程保证通信
-                isSuccess = true;
+                b = true;
             } else {
                 socket.close();//登陆失败,则关闭Socket
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return isSuccess;
+        return b;
     }
-
 }

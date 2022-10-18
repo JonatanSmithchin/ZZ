@@ -2,12 +2,11 @@ package ZZ.Client;
 
 import ZZ.Client.service.UserClientService;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class View {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         View view = new View();
         view.menu();
     }
@@ -15,7 +14,7 @@ public class View {
     private Scanner scanner = new Scanner(System.in);
 
     private UserClientService userClientService = new UserClientService();
-    public View() throws IOException {
+    public View(){
 
     }
 
@@ -26,8 +25,7 @@ public class View {
         while(loop){
             System.out.println("登录...");
             System.out.println("1.登录");
-            System.out.println("2.注册");
-            System.out.println("3.退出\n");
+            System.out.println("2.退出\n");
             System.out.println("输入选择：");
             key = scanner.nextInt();
             switch (key){
@@ -47,12 +45,6 @@ public class View {
 
                     break;
                 case 2:
-                    System.out.print("userName:");
-                    String newUserName = scanner.next();
-                    System.out.print("password:");
-                    String newPassword = scanner.next();
-
-                case 3:
                     System.out.println("退出成功。。。");
                     loop = false;
                     break;
