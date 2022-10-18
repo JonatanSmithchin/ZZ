@@ -1,6 +1,6 @@
 package ZZ.Server;
 
-import ZZ.Server.service.serverService;
+import ZZ.Server.Service.ServerConnectClientThread;
 import ZZ.domain.Message;
 import ZZ.domain.MessageType;
 import ZZ.domain.User;
@@ -50,7 +50,7 @@ public class Server {
 
                 Message message = new Message();
                 if(checkUser(user)){
-                    serverService serverService = new serverService(socket, user.getUserName());
+                    ServerConnectClientThread serverService = new ServerConnectClientThread(socket, user.getUserName());
                     serverService.start();
                     System.out.println("登陆成功！");
                     message.setMessageType(MessageType.MESSAGE_LOGIN_SUCCEED);
