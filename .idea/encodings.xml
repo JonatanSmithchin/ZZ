@@ -6,6 +6,8 @@
     <file url="file://$PROJECT_DIR$/ClientGUI/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ClientGUI/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ZZ/Client/service/ClientConnectServerThread.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
   </component>
 </project>
