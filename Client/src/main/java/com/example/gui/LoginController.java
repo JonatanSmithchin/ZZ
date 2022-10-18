@@ -33,11 +33,14 @@ public class LoginController {
         String psw =password.getText();
         System.out.println(name+psw);
         UserClientService userClientService = new UserClientService();
-        boolean isSuccess = userClientService.checkUser(name,psw);
-        if(isSuccess){
 
+        if(userClientService.checkUser(name,psw)){
+            Stage stage = (Stage) userName.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainPage-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
         }
-        System.out.println(isSuccess);
 
     }
 
