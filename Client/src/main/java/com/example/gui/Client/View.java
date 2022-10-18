@@ -1,6 +1,6 @@
-package ZZ.Client;
+package com.example.gui.Client;
 
-import ZZ.Client.service.UserClientService;
+import com.example.gui.Client.service.UserClientService;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -36,14 +36,9 @@ public class View {
                     String userName = scanner.next();
                     System.out.print("password:");
                     String password = scanner.next();
-                    boolean isSuccess =
-                            userClientService.checkUser(userName,password);
 
-                    if(isSuccess){
-                        System.out.println("登陆成功。。。");
-                    }else{
-                        System.out.println("登陆失败。。。");
-                    }
+
+
 
                     break;
                 case 2:

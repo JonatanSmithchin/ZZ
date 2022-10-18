@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class ManagerOfServerThread {
-    private static HashMap<String,ServerConnectClientThread> map
+    private static HashMap<String, ServerConnectClientThread> map
             = new HashMap<>();
 
     public static void addServerThread(String userName,ServerConnectClientThread scct){

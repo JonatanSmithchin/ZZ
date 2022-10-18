@@ -1,6 +1,8 @@
 package com.example.gui;
 
-import ZZ.Client.service.UserClientService;
+import com.example.gui.Client.service.ClientConnectServerThread;
+import com.example.gui.Client.service.ManagerOfClientThread;
+import com.example.gui.Client.service.UserClientService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginController {
@@ -34,10 +39,29 @@ public class LoginController {
         System.out.println(name+psw);
         UserClientService userClientService = new UserClientService();
 
-        if(userClientService.checkUser(name,psw)){
+        Socket socket = userClientService.checkUser(name,psw);
+        if(socket!=null){
             Stage stage = (Stage) userName.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainPage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+            MainPageController mainPageController = fxmlLoader.getController();
+//            FXMLLoader chatFxmlLoader = new FXMLLoader(HelloApplication.class.getResource("personChat-view.fxml"));
+//            System.out.println(chatFxmlLoader);
+//            PersonChatController personChatController = chatFxmlLoader.getController();
+//            System.out.println(personChatController);
+            ClientConnectServerThread clientConnectServerThread = new ClientConnectServerThread(socket,mainPageController,null);
+            //ManagerOfClientThread.addClientThread(name,clientConnectServerThread);
+            //System.out.println(ManagerOfClientThread.getClientThread(name));
+            Map<String,Object> map = new HashMap<>();
+            map.put("userName",name);
+            map.put("password",psw);
+            map.put("socket",socket);
+            map.put("service",userClientService);
+            map.put("thread",clientConnectServerThread);
+//            map.put("personChatController",personChatController);
+//            map.put("scene",new Scene(chatFxmlLoader.load()));
+            scene.setUserData(map);
+            mainPageController.init();
             stage.setScene(scene);
             stage.show();
         }

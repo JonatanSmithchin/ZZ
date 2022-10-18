@@ -43,10 +43,10 @@ public class SignInController {
             stage.show();
             passwordText.setText("");
             RePasswordText.setText("");
+            return;
         }
-
-        boolean isSuccess = true;
-        if (isSuccess){
+/// TODO: 2022/10/18 增加判断注册成功逻辑
+        if (true){
             Stage stage = (Stage) userNameText.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainPage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
