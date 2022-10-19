@@ -1,16 +1,25 @@
 package com.example.gui;
 
 import ZZ.domain.Message;
+import com.example.gui.Client.service.ClientFileService;
 import com.example.gui.Client.service.ManagerOfClientThread;
 import com.example.gui.Client.service.MessageClientService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 import java.util.HashMap;
 
 public class PersonChatController {
@@ -35,12 +44,15 @@ public class PersonChatController {
 
     private MessageClientService messageClientService;
 
+    private ClientFileService fileService;
+
     private String receiver;
 
     private String sender;
 
     public void init(){
         messageClientService = new MessageClientService();
+        fileService = new ClientFileService();
         HashMap map = (HashMap) textArea.getScene().getUserData();
         sender = (String) map.get("sender");
         receiver = (String) map.get("receiver");
@@ -58,21 +70,40 @@ public class PersonChatController {
     }
 
     @FXML
-    void sendFile(MouseEvent event) {
-
-    }
-
-    @FXML
     void sendMessage(MouseEvent event) {
         String context = textArea.getText();
         System.out.println(ManagerOfClientThread.getClientThread(sender));
         messageClientService.personalChat(sender,receiver,context);
+        textArea.setText("");
+        Label labelContext = new Label();
+        Label labelTime = new Label();
+        labelContext.setText(receiver+": "+context);
+        labelTime.setStyle("-fx-text-fill: blue");
+        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        labelTime.setText(dataFormat.format(new Date()));
+        System.out.println(new Date());
+
+        dialogBox.getChildren().addAll(labelTime,labelContext);
     }
 
-    public void updateDialog(Message message){
-        Label label = new Label();
-        label.setText(message.getContent());
-        dialogBox.getChildren().add(label);
+    public void updateDialog(Message message)  {
+        Label labelContext = new Label();
+        Label labelTime = new Label();
+        labelContext.setText(message.getSender()+": "+message.getContent());
+        labelTime.setStyle("-fx-text-fill: blue");
+        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        labelTime.setText(dataFormat.format(message.getSendTime()));
+
+        dialogBox.getChildren().addAll(labelTime,labelContext);
+    }
+
+    @FXML
+    private void sendFile(MouseEvent event){
+        System.out.println("send:");
+        FileChooser chooser = new FileChooser();
+        File file = chooser.showOpenDialog(sendfileButton.getScene().getWindow());
+        System.out.println(file);
+        fileService.sendFile(sender,receiver,"D:/receive/"+file.getName(),file.getAbsolutePath());
     }
 
 }

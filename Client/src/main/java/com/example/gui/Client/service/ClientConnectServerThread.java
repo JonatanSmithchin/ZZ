@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 public class ClientConnectServerThread extends Thread{
     //ÿ���̶߳���Ҫ����һ��Socket
@@ -73,11 +76,13 @@ public class ClientConnectServerThread extends Thread{
                                     throw new RuntimeException(e);
                                 }
                                 HashMap<String,Object> map = new HashMap<>();
-                                map.put("sender",message.getSender());
-                                map.put("receiver",message.getReceiver());
+                                map.put("sender",message.getReceiver());
+                                map.put("receiver",message.getSender());//反转receiver和sender才能建立正确的客户端聊天界面，得到正确的线程
+                                map.put("clientThread",ManagerOfClientThread.getClientThread(message.getReceiver()));
                                 scene.setUserData(map);
                                 PersonChatController personChatController = fxmlLoader.getController();
                                 setPersonChatController(personChatController);
+                                System.out.println(ManagerOfClientThread.getClientThread(message.getReceiver()));
                                 personChatController.init();
                                 Stage stage = new Stage();
                                 stage.setScene(scene);
@@ -94,15 +99,30 @@ public class ClientConnectServerThread extends Thread{
                             +message.getSender()+"��������˵:"+message.getContent());
                 }else if(messageType.equals(MessageType.MESSAGE_FILE_MSE)){
                     System.out.println(message.getSender()+"�������ļ���"+message.getMyFile().getDest());
-                    FileOutputStream fos = new FileOutputStream(message.getMyFile().getDest());
-                    fos.write(message.getMyFile().getFileBytes());
-                    fos.close();
+
+                    final FutureTask<Boolean> confirm = new FutureTask<>(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return mainPageController.popReceiveFile(message.getSender(),message.getMyFile().getSrc());
+                        }
+                    });
+
+                    Platform.runLater(confirm);
+
+                    if (confirm.get()){
+                        FileOutputStream fos = new FileOutputStream(message.getMyFile().getDest());
+                        fos.write(message.getMyFile().getFileBytes());
+                        fos.close();
+                    }
+
                 }else{
 
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 break;
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
         }
