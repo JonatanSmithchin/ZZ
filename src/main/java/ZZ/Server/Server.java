@@ -1,5 +1,6 @@
 package ZZ.Server;
 
+import ZZ.Server.Service.ManagerOfServerThread;
 import ZZ.Server.Service.ServerConnectClientThread;
 import ZZ.domain.Message;
 import ZZ.domain.MessageType;
@@ -52,7 +53,8 @@ public class Server {
                 if(checkUser(user)){
                     ServerConnectClientThread serverService = new ServerConnectClientThread(socket, user.getUserName());
                     serverService.start();
-                    System.out.println("登陆成功！");
+                    ManagerOfServerThread.addServerThread(user.getUserName(),serverService);
+                    System.out.println("登陆成功！"+ ManagerOfServerThread.getServerThread(user.getUserName()));
                     message.setMessageType(MessageType.MESSAGE_LOGIN_SUCCEED);
                     oos.writeObject(message);
                 }else{

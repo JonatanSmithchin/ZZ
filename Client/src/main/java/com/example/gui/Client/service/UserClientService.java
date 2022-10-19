@@ -1,4 +1,4 @@
-package ZZ.Client.service;
+package com.example.gui.Client.service;
 
 
 import ZZ.domain.Message;
@@ -21,7 +21,7 @@ public class UserClientService {
     }
 
 
-    public boolean checkUser(String userName, String password) {
+    public Socket checkUser(String userName, String password) {
         u.setUserName(userName);
         u.setPassword(password);
         boolean isSuccess = false;
@@ -35,15 +35,32 @@ public class UserClientService {
             Message ms = (Message) ois.readObject();
 
             if (ms.getMessageType().equals(MessageType.MESSAGE_LOGIN_SUCCEED)) {
-                //创建新线程保证通信
-                isSuccess = true;
+
             } else {
-                socket.close();//登陆失败,则关闭Socket
+                socket.close();
+                return null;//登陆失败,则关闭Socket
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return isSuccess;
+        return socket;
+    }
+
+    public void onlineUserList(){
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_GET_ONLINE_USER);
+        message.setSender(u.getUserName());
+        try {
+            ObjectOutputStream oos =
+                    new ObjectOutputStream(
+                            ManagerOfClientThread.
+                                    getClientThread(u.getUserName()).
+                                    getSocket().getOutputStream());
+            //通过UserName从管理线程的Map中得到该用户的线程对象关联的Socket的输出流
+            oos.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

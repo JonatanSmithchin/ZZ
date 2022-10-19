@@ -1,4 +1,4 @@
-package ZZ.Client.service;
+package com.example.gui.Client.service;
 
 import java.util.HashMap;
 
