@@ -15,7 +15,7 @@ public class MessageClientService {
         message.setReceiver(receiver);
         message.setMessageType(MessageType.MESSAGE_COMN_MSG);
         message.setContent(content);
-        message.setSendTime(new Date().toString());
+        message.setSendTime(new Date());
         System.out.println(sender+"对"+receiver+"说:"+content);
         try {
             ObjectOutputStream oos =
@@ -34,7 +34,7 @@ public class MessageClientService {
         message.setSender(sender);
         message.setContent(content);
         message.setMessageType(MessageType.MESSAGE_GROUP_MSG);
-        message.setSendTime(new Date().toString());
+        message.setSendTime(new Date());
         try {
             ObjectOutputStream oos =
                     new ObjectOutputStream(

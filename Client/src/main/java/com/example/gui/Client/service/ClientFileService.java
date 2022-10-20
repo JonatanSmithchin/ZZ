@@ -46,7 +46,7 @@ public class ClientFileService {
         message.setMessageType(MessageType.MESSAGE_FILE_MSE);
         message.setSender(sender);
         message.setReceiver(receiver);
-        message.setSendTime(new Date().toString());
+        message.setSendTime(new Date());
         System.out.println(sender+"发给"+receiver);
 
         try {

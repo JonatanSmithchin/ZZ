@@ -7,8 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 
 public class MainPageController {
@@ -52,7 +52,6 @@ public class MainPageController {
         super();
         System.out.println("hello");
     }
-
 
     void init() throws IOException {
 
@@ -94,8 +93,6 @@ public class MainPageController {
 
     public void updateUsers(String[] userNames){
         System.out.println(userNames.length);
-
-
 
         if (userOnline.isExpanded()){
             if(!Arrays.equals(usersBeforeUpdate, userNames)){
@@ -140,5 +137,14 @@ public class MainPageController {
                 }
             }
         }
+    }
+
+    public boolean popReceiveFile(String sender,String fileName) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("是否接收来自"+sender+"的文件"+fileName+"？");
+        alert.showAndWait();
+        ButtonType buttonType = alert.getResult();
+        if (buttonType==ButtonType.OK) return true;
+        else return false;
     }
 }
