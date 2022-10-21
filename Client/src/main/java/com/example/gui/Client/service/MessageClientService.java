@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class MessageClientService {
 
-    public void personalChat(String sender, String receiver, String content){
+    public static void personalChat(String sender, String receiver, String content){
         Message message = new Message();
         message.setSender(sender);
         message.setReceiver(receiver);
@@ -29,7 +29,7 @@ public class MessageClientService {
         }
     }
 
-    public void groupChat(String sender, String content){
+    public static void groupChat(String sender, String content){
         Message message = new Message();
         message.setSender(sender);
         message.setContent(content);

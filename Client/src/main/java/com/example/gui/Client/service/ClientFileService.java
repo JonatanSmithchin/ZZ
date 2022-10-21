@@ -19,7 +19,7 @@ public class ClientFileService {
      * @param dest 目标路径
      * @param src 源路径
      */
-    public void sendFile(String sender, String receiver, String dest, String src){
+    public static void sendFile(String sender, String receiver, String dest, String src){
 
         File file =new File(src);
         byte[] fileBytes = new byte[(int)file.length()];

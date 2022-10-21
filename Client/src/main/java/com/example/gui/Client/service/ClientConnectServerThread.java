@@ -25,16 +25,16 @@ public class ClientConnectServerThread extends Thread{
 
     MainPageController mainPageController;
 
-    PersonChatController personChatController;
+    HashMap<String,PersonChatController>  onlinePersonChatController;
 
-    public ClientConnectServerThread(Socket socket,MainPageController mainPageController,PersonChatController personChatController){
+    public ClientConnectServerThread(Socket socket,MainPageController mainPageController){
         this.socket=socket;
         this.mainPageController = mainPageController;
-        this.personChatController = personChatController;
+        this.onlinePersonChatController = new HashMap<>();
     }
 
-    public void setPersonChatController(PersonChatController personChatController) {
-        this.personChatController = personChatController;
+    public void addPersonChatController(String onlineUser,PersonChatController personChatController) {
+        onlinePersonChatController.put(onlineUser,personChatController);
     }
 
     @Override
@@ -67,31 +67,31 @@ public class ClientConnectServerThread extends Thread{
                     Platform.runLater((new Runnable() {
                         @Override
                         public void run() {
-                            if(personChatController == null){
-                                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("personChat-view.fxml"));
-                                Scene scene = null;
-                                try {
-                                    scene = new Scene(fxmlLoader.load());
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                HashMap<String,Object> map = new HashMap<>();
-                                map.put("sender",message.getReceiver());
-                                map.put("receiver",message.getSender());//反转receiver和sender才能建立正确的客户端聊天界面，得到正确的线程
-                                map.put("clientThread",ManagerOfClientThread.getClientThread(message.getReceiver()));
-                                scene.setUserData(map);
-                                PersonChatController personChatController = fxmlLoader.getController();
-                                setPersonChatController(personChatController);
-                                System.out.println(ManagerOfClientThread.getClientThread(message.getReceiver()));
-                                personChatController.init();
-                                Stage stage = new Stage();
-                                stage.setScene(scene);
-                                stage.setTitle(message.getSender());
-                                stage.show();
-                            }
+//                            if(personChatController == null){
+//                                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("personChat-view.fxml"));
+//                                Scene scene = null;
+//                                try {
+//                                    scene = new Scene(fxmlLoader.load());
+//                                } catch (IOException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//                                HashMap<String,Object> map = new HashMap<>();
+//                                map.put("sender",message.getReceiver());
+//                                map.put("receiver",message.getSender());//反转receiver和sender才能建立正确的客户端聊天界面，得到正确的线程
+//                                map.put("clientThread",ManagerOfClientThread.getClientThread(message.getReceiver()));
+//                                scene.setUserData(map);
+//                                PersonChatController personChatController = fxmlLoader.getController();
+//                                setPersonChatController(personChatController);
+//                                System.out.println(ManagerOfClientThread.getClientThread(message.getReceiver()));
+//                                personChatController.init();
+//                                Stage stage = new Stage();
+//                                stage.setScene(scene);
+//                                stage.setTitle(message.getSender());
+//                                stage.show();
+//                            }
 
 
-                            personChatController.updateDialog(message);
+                            onlinePersonChatController.get(message.getSender()).updateDialog(message);
                         }
                     }));
                 }else if(messageType.equals(MessageType.MESSAGE_GROUP_MSG)){

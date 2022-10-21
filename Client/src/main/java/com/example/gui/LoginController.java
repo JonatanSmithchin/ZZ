@@ -49,7 +49,7 @@ public class LoginController {
 //            System.out.println(chatFxmlLoader);
 //            PersonChatController personChatController = chatFxmlLoader.getController();
 //            System.out.println(personChatController);
-            ClientConnectServerThread clientConnectServerThread = new ClientConnectServerThread(socket,mainPageController,null);
+            ClientConnectServerThread clientConnectServerThread = new ClientConnectServerThread(socket,mainPageController);
             //ManagerOfClientThread.addClientThread(name,clientConnectServerThread);
             //System.out.println(ManagerOfClientThread.getClientThread(name));
             Map<String,Object> map = new HashMap<>();
