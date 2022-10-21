@@ -9,4 +9,7 @@ public interface MessageType {
     String MESSAGE_RETURN_ONLINE_USER = "6";
     String MESSAGE_CLIENT_EXIT = "7";//请求退出
     String MESSAGE_FILE_MSE = "8";
+    String MESSAGE_LOGIN_REQ = "9";
+    String MESSAGE_SIGNIN_REQ = "10";
+
 }
