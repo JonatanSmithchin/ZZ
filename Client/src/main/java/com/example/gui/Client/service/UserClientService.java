@@ -4,6 +4,7 @@ package com.example.gui.Client.service;
 import ZZ.domain.Message;
 import ZZ.domain.MessageType;
 import ZZ.domain.User;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,7 +25,6 @@ public class UserClientService {
     public Socket checkUser(String userName, String password) {
         u.setUserName(userName);
         u.setPassword(password);
-        boolean isSuccess = false;
 
         try {
 
@@ -46,9 +46,7 @@ public class UserClientService {
         return socket;
     }
 
-    public void onlineUserList(){
-        Message message = new Message();
-        message.setMessageType(MessageType.MESSAGE_GET_ONLINE_USER);
+    private void writeMessage(@NotNull Message message){
         message.setSender(u.getUserName());
         try {
             ObjectOutputStream oos =
@@ -60,7 +58,19 @@ public class UserClientService {
             oos.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }}
+
+    public void onlineUserList(){
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_GET_ONLINE_USER);
+        writeMessage(message);
+    }
+
+    public void logout(){
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_CLIENT_EXIT);
+        System.out.println("to logout");
+        writeMessage(message);
     }
 
 }

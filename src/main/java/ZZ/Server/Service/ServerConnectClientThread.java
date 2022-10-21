@@ -20,6 +20,7 @@ public class ServerConnectClientThread extends Thread{
     }
     @Override
     public void run() {
+        label:
         while(true){
             try {
                 System.out.println("和"+userName+"保持通信,读取数据");
@@ -27,20 +28,29 @@ public class ServerConnectClientThread extends Thread{
                 Message message = (Message) ois.readObject();
                 String messageType = message.getMessageType();
                 //判断Message类型,进行相应处理
-                if(messageType.equals(MessageType.MESSAGE_GET_ONLINE_USER)){//查询在线用户
-                    ManagerOfServerThread.getOnlineUsers(userName,message.getSender());
-                }else if(messageType.equals(MessageType.MESSAGE_COMN_MSG)){//私聊
-                    ManagerOfServerThread.msg(message);
-                }else if (messageType.equals(MessageType.MESSAGE_CLIENT_EXIT)){//退出
-                    ManagerOfServerThread.removeServerThread(message,userName,socket);
-                    break;
-                }else if(messageType.equals(MessageType.MESSAGE_GROUP_MSG)){//群发
-                    ManagerOfServerThread.groupMsg(message);
-                }else if(messageType.equals(MessageType.MESSAGE_FILE_MSE)){//传输文件
-                    ManagerOfServerThread.file(message);
-                }else{
-                    System.out.println("to be continued...");
+                switch (messageType) {
+                    case MessageType.MESSAGE_GET_ONLINE_USER: //查询在线用户
+                        ManagerOfServerThread.getOnlineUsers(userName, message.getSender());
+                        break;
+                    case MessageType.MESSAGE_COMN_MSG: //私聊
+                        ManagerOfServerThread.msg(message);
+                        break;
+                    case MessageType.MESSAGE_CLIENT_EXIT: //退出
+                        System.out.println(userName+"wait");
+                        ManagerOfServerThread.removeServerThread(message, userName, socket);
+                        System.out.println(userName+"logout");
+                        break label;
+                    case MessageType.MESSAGE_GROUP_MSG: //群发
+                        ManagerOfServerThread.groupMsg(message);
+                        break;
+                    case MessageType.MESSAGE_FILE_MSE: //传输文件
+                        ManagerOfServerThread.file(message);
+                        break;
+                    default:
+                        System.out.println("to be continued...");
+                        break;
                 }
+
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 break;

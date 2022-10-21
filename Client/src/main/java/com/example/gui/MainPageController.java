@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 
 public class MainPageController {
@@ -30,6 +29,9 @@ public class MainPageController {
 
     @FXML
     private VBox vBox ;
+
+    @FXML
+    private Button logout;
 
     private double layoutY = 2.0;
 
@@ -45,6 +47,8 @@ public class MainPageController {
     private ClientConnectServerThread clientConnectServerThread;
 
     private String[] usersBeforeUpdate ;
+
+    private HashMap<String,Stage> stageHashMap;
 
     private Socket socket;
 
@@ -67,6 +71,7 @@ public class MainPageController {
         //System.out.println(personChatController);
         userOnline.setExpanded(true);
         usersBeforeUpdate = null;
+        stageHashMap = new HashMap<>();
 
 
         clientConnectServerThread = (ClientConnectServerThread) map.get("thread");
@@ -108,29 +113,30 @@ public class MainPageController {
                     layoutY+=width;
                     label.setText(userNames[i]);
                     label.setFont(new Font("Microsoft YaHei",18));
+
+                    HashMap<String,Object> nextMap = new HashMap<>();
+                    nextMap.put("receiver",label.getText());
+                    nextMap.put("sender",user.getText());
+                    //新建每个在线用户的聊天框，放入HashMap维护
+                    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("personChat-view.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    scene.setUserData(nextMap);
+                    PersonChatController personChatController = fxmlLoader.getController();
+                    clientConnectServerThread.addPersonChatController(label.getText(),personChatController);
+                    personChatController.init();
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle(label.getText());
+                    stageHashMap.put(label.getText(),stage);
                     label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
-
-
-                            HashMap<String,Object> nextMap = new HashMap<>();
-                            nextMap.put("receiver",label.getText());
-                            nextMap.put("sender",user.getText());
-                            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("personChat-view.fxml"));
-                            Scene scene = null;
-                            try {
-                                scene = new Scene(fxmlLoader.load());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            scene.setUserData(nextMap);
-                            PersonChatController personChatController = fxmlLoader.getController();
-                            clientConnectServerThread.setPersonChatController(personChatController);
-                            personChatController.init();
-                            Stage stage = new Stage();
-                            stage.setScene(scene);
-                            stage.setTitle(label.getText());
-                            stage.show();
+                            stageHashMap.get(label.getText()).show();
                         }
                     });
                     vBox.getChildren().add(label);
@@ -147,4 +153,12 @@ public class MainPageController {
         if (buttonType==ButtonType.OK) return true;
         else return false;
     }
+
+    @FXML
+    void onLogoutButtonClick(MouseEvent event) {
+        Stage stage = (Stage)logout.getScene().getWindow();
+        userClientService.logout();
+        stage.close();
+    }
+
 }
