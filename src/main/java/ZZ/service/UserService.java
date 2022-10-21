@@ -1,6 +1,7 @@
 package ZZ.service;
 
 import ZZ.dao.UserDAO;
+import ZZ.dao.impl.UserDaoImpl;
 import ZZ.domain.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -12,16 +13,14 @@ import java.io.InputStream;
 
 public class UserService {
 
-    private InputStream inputStream;
-    private SqlSessionFactory factory;
-    private SqlSession session;
+    //private InputStream inputStream;
+    //private SqlSessionFactory factory;
+    //private SqlSession session;
     private UserDAO userDAO;
 
     public UserService() throws IOException {
-        inputStream = Resources.getResourceAsStream("SqlMApConfig.xml");
-        factory = new SqlSessionFactoryBuilder().build(inputStream);
-        session = factory.openSession();
-        userDAO = session.getMapper(UserDAO.class);
+
+        userDAO = new UserDaoImpl();
     }
 
     public boolean checkPassword(String userName,String password){
