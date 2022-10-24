@@ -29,7 +29,37 @@ public class UserClientService {
         try {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(u);
+            Message message = new Message();
+            message.setMessageType(MessageType.MESSAGE_LOGIN_REQ);
+            message.setContent(u);
+            oos.writeObject(message);
+
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            Message ms = (Message) ois.readObject();
+
+            if (ms.getMessageType().equals(MessageType.MESSAGE_LOGIN_SUCCEED)) {
+
+            } else {
+                socket.close();
+                return null;//登陆失败,则关闭Socket
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return socket;
+    }
+
+    public Socket signIn(String userName,String password){
+        u.setUserName(userName);
+        u.setPassword(password);
+
+        try {
+
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            Message message = new Message();
+            message.setMessageType(MessageType.MESSAGE_SIGNIN_REQ);
+            message.setContent(u);
+            oos.writeObject(message);
 
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             Message ms = (Message) ois.readObject();

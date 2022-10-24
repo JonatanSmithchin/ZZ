@@ -50,7 +50,7 @@ public class ClientConnectServerThread extends Thread{
                 String messageType = message.getMessageType();
                 if (messageType.equals(MessageType.MESSAGE_RETURN_ONLINE_USER)){
                     System.out.println("===Users Online===");
-                    String[] onlineUsers = message.getContent().split(" ");
+                    String[] onlineUsers = ((String) message.getContent()).split(" ");
                     for (int i = 0; i < onlineUsers.length; i++) {
                         Platform.runLater(new Runnable() {
                             @Override

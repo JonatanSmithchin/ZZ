@@ -7,7 +7,7 @@ public class Message implements Serializable {
     private static final long serialVersionUID =1L;
     private String sender;
     private String receiver;
-    private String content;
+    private Object content;
     private Date sendTime;
     private String messageType;//根据接口常量定义消息类型
 
@@ -37,11 +37,11 @@ public class Message implements Serializable {
         this.receiver = receiver;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 

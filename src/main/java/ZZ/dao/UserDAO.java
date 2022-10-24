@@ -16,6 +16,8 @@ public interface UserDAO {
     )
     User getByUserName(String userName);
 
+
+
     @Insert("insert into zz_user_tbl values(#{userId},#{userName},#{password})")
     Boolean updateUser(User user);
 }

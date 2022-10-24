@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="fx">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/.jdks/fx" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/.jdks/fx" recursive="false" type="SOURCES" />
+  </library>
+</component>

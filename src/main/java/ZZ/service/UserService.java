@@ -32,4 +32,18 @@ public class UserService {
             return false;
         }
     }
+    public boolean isUserExists(String userName,String password){
+        User user = userDAO.getByUserName(userName);
+        if(user == null){
+            User user1 = new User(Integer.toString((int)(Math.random()*100)),userName,password);
+            System.out.println(user1);
+            userDAO.updateUser(user1);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public void update(String userName,String password){
+        userDAO.updateUser(new User("34",userName,password));
+    }
 }

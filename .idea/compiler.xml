@@ -8,11 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ZZ" />
         <module name="Client" />
+        <module name="GUI" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ClientGUI" target="18" />
-      <module name="GUI" target="18" />
     </bytecodeTargetLevel>
   </component>
 </project>

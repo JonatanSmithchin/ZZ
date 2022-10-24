@@ -94,6 +94,10 @@ public class PersonChatController {
         FileChooser chooser = new FileChooser();
         File file = chooser.showOpenDialog(sendfileButton.getScene().getWindow());
         System.out.println(file);
+        File file1 = new File("D:/receive");
+        if(!file1.exists()){
+            file1.mkdir();
+        }
         ClientFileService.sendFile(sender,receiver,"D:/receive/"+file.getName(),file.getAbsolutePath());
     }
 

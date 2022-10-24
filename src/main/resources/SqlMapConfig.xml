@@ -5,6 +5,10 @@
 <configuration>
     <!--引入外部配置文件-->
     <properties resource="jdbcConfig.properties"/>
+
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
     <!--配置别名-->
     <typeAliases>
         <package name="ZZ.domain"/>
@@ -25,4 +29,6 @@
     <mappers>
         <package name="ZZ.dao"/>
     </mappers>
+
+
 </configuration>
