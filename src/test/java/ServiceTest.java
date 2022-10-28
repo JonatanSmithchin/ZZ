@@ -8,7 +8,7 @@ public class ServiceTest {
     public void testIsExist() throws IOException {
         UserService userService = new UserService();
 //        userService.isUserExists("master","345678");
-        userService.update("master","345678");
+        userService.isUserExists("bbb","345678");
     }
 
     @Test

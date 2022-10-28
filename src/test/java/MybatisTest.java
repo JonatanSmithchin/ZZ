@@ -45,7 +45,7 @@ public class MybatisTest {
 
     @Test
     public void testUpdate(){
-        userDAO.updateUser(new User("126","manager2","345678"));
+        userDAO.updateUser(new User("127","manager3","345678"));
     }
 
     @Test
